@@ -1,19 +1,43 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { ConnectedRouter } from "connected-react-router";
+import { history } from "./store/rootReducer";
+import { Switch, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import store from "./store/index";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
+import App from "./components/App/App";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import Post from "./pages/Post";
+import PrivateRoute from "./routers/PrivateRoute";
+
+ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <ToastContainer />
+        <App>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/dashboard">
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            </Route>
+            <Route path="/post/:id">
+              <PrivateRoute>
+                <Post />
+              </PrivateRoute>
+            </Route>
+            <Route path="/login" exact component={Login} />
+          </Switch>
+        </App>
+      </ConnectedRouter>
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

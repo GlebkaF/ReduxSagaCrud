@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+# **\_test_crud_redux-saga**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# тестовое задание
 
-## Available Scripts
+# в разработке
 
-In the project directory, you can run:
+## Описание проекта:
 
-### `npm start`
+Создать CRUD приложение с авторизацией, React 17, redux-saga, connected-react-router, обработка ошибок
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Технический стек
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- [x] React 17
+- [x] Redux + Redux-saga
+- [x] React Router DOM, реализация routing
+- [x] connected-react-router
+- [x] Bootstrap
+- [x] react-toastify
+- [x] Eslint, prettier
 
-### `npm test`
+# Структура приложения и функционал
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1. Главная страница:
 
-### `npm run build`
+- доступ без авторизации
+- меню
+- регистрация
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 2. Страница Dashboard:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- доступ только авторизованным
+- форма создания нового поста (в select подгружены все авторы, отдельным списком вынесены все существующие теги)
+- список всех существующих постов с возможностью удалить пост или просмотреть
+- пагинация
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 3. Страница поста:
 
-### `npm run eject`
+- доступ только авторизованным
+- форма, заполненная полученными данными поста с возможностью редактирования
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Аутентификация:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- токены доступа
+- axios interceptors
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Зарегистрированный пользователь может:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- просмотреть список постов, авторов, тегов
+- добавить пост
+- снять пост с публикации
+- редактировать пост
