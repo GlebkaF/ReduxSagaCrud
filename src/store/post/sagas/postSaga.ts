@@ -69,7 +69,8 @@ function* createPostWorker({ formData }: createPostAction) {
         });
         break;
       case "Request failed with status code 401":
-        console.error("Пожалуйста, авторизуйтесь");
+        console.log("Пожалуйста, авторизуйтесь");
+        //console.error("Пожалуйста, авторизуйтесь");
         break;
     }
   }
@@ -184,7 +185,8 @@ function* getPostDetailWorker({ id }: getPost) {
         });
         break;
       case "Request failed with status code 401":
-        console.error("Пожалуйста, авторизуйтесь");
+        console.log("Пожалуйста, авторизуйтесь");
+       // console.error("Пожалуйста, авторизуйтесь");
         break;
     }
   }
@@ -217,7 +219,8 @@ function* getPostsWorker({ page }: getPosts) {
     const { message } = error;
     switch (message) {
       case "Request failed with status code 401":
-        console.error("Пожалуйста, авторизуйтесь");
+        console.log("Пожалуйста, авторизуйтесь");
+        //console.error("Пожалуйста, авторизуйтесь");
         break;
     }
   }

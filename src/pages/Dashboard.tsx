@@ -20,7 +20,7 @@ const Dashboard: FC = () => {
   }, [posts.error]);
 
   const changePage = (newPage: number) =>
-    dispatch({ type: "POST_LOADING", page: newPage });
+    dispatch({ type: "POST_LOADING_REQUEST", page: newPage });
 
   return (
     <div className="container">
