@@ -15,27 +15,31 @@ import Dashboard from "./pages/Dashboard";
 import Post from "./pages/Post";
 import PrivateRoute from "./routers/PrivateRoute";
 
+import AuthMiddleware from "./helpers/AuthMidleware";
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <ToastContainer />
-        <App>
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/dashboard">
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            </Route>
-            <Route path="/post/:id">
-              <PrivateRoute>
-                <Post />
-              </PrivateRoute>
-            </Route>
-            <Route path="/login" exact component={Login} />
-          </Switch>
-        </App>
+        <AuthMiddleware>
+          <App>
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/dashboard">
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              </Route>
+              <Route path="/post/:id">
+                <PrivateRoute>
+                  <Post />
+                </PrivateRoute>
+              </Route>
+              <Route path="/login" exact component={Login} />
+            </Switch>
+          </App>
+        </AuthMiddleware>
       </ConnectedRouter>
     </Provider>
   </React.StrictMode>,

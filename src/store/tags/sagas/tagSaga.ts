@@ -37,7 +37,15 @@ function* getTagsWorker() {
 
         yield put(data);
     }
-  } catch (err) {}
+  } catch (error: any) {
+    const { message } = error;
+    if (message === "Request failed with status code 401") {
+      console.log("Пожалуйста, авторизуйтесь");
+      if (Cookies.get("refreshToken")) {
+        yield put({ type: "GET_TAGS" });
+      }
+    }
+  }
 }
 
 export function* watchTagsSaga() {

@@ -1,7 +1,6 @@
 import Cookies from "js-cookie";
 
 const isAuthenticated = () => {
-  const token: any = Cookies.get("accessToken");
   const refreshToken: any = Cookies.get("refreshToken");
 
   try {

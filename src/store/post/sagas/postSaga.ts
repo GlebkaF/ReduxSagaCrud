@@ -22,7 +22,7 @@ import {
   createPostAction,
   deletePostAction,
 } from "../types/actionsType";
-import { selectPosts } from "../reducers/postReducer";
+import { selectDetailPost, selectPosts } from "../reducers/postReducer";
 
 // watchers
 
@@ -69,8 +69,7 @@ function* createPostWorker({ formData }: createPostAction) {
         });
         break;
       case "Request failed with status code 401":
-        console.log("Пожалуйста, авторизуйтесь");
-        //console.error("Пожалуйста, авторизуйтесь");
+        console.log("ошибка авторизации");
         break;
     }
   }
@@ -88,9 +87,9 @@ function* editPostWorker({ formData, id }: editPostAction) {
     });
     switch (response.status) {
       case 200:
-        const { page } = yield select(selectPosts);
-        yield put({ type: "POST_LOADING_REQUEST", page: page });
         yield put({ type: "POSTS_SUCCESS" });
+        const { id } = yield select(selectDetailPost);
+        yield put({ type: "GET_POST_REQUEST", id: id });
     }
   } catch (error: any) {
     const { message } = error;
@@ -114,7 +113,7 @@ function* editPostWorker({ formData, id }: editPostAction) {
         });
         break;
       case "Request failed with status code 401":
-        console.error("Пожалуйста, авторизуйтесь");
+        console.log("ошибка авторизации");
         break;
     }
   }
@@ -154,7 +153,7 @@ function* deletePostWorker({ id }: deletePostAction) {
         });
         break;
       case "Request failed with status code 401":
-        console.error("Пожалуйста, авторизуйтесь");
+        console.log("ошибка авторизации");
         break;
     }
   }
@@ -185,8 +184,10 @@ function* getPostDetailWorker({ id }: getPost) {
         });
         break;
       case "Request failed with status code 401":
-        console.log("Пожалуйста, авторизуйтесь");
-       // console.error("Пожалуйста, авторизуйтесь");
+        console.log("ошибка авторизации");
+        if (Cookies.get("refreshToken")) {
+          yield put({ type: "GET_POST_REQUEST", id: id });
+        }
         break;
     }
   }
@@ -219,8 +220,10 @@ function* getPostsWorker({ page }: getPosts) {
     const { message } = error;
     switch (message) {
       case "Request failed with status code 401":
-        console.log("Пожалуйста, авторизуйтесь");
-        //console.error("Пожалуйста, авторизуйтесь");
+        console.log("ошибка авторизации");
+        if (Cookies.get("refreshToken")) {
+          yield put({ type: "GET_POSTS_REQUEST", page: page });
+        }
         break;
     }
   }
@@ -232,12 +235,14 @@ export function* routeChangeSaga() {
       payload: { location },
     } = yield take(LOCATION_CHANGE);
 
-    if (location.pathname === "/dashboard" && Cookies.get("refreshToken")) {
-      const { page } = yield select(selectPosts);
-      yield put({
-        type: "POST_LOADING_REQUEST",
-        page: page,
-      });
+    if (location.pathname === "/dashboard") {
+      if (Cookies.get("refreshToken")) {
+        const { page } = yield select(selectPosts);
+        yield put({
+          type: "POST_LOADING_REQUEST",
+          page: page,
+        });
+      }
     }
 
     if (location.pathname.includes("/post") === false) {

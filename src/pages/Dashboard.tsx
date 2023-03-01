@@ -25,13 +25,6 @@ const Dashboard: FC = () => {
   return (
     <div className="container">
       <PostForm textBtn="Добавить" />
-      {posts.loading && (
-        <div className="text-center">
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      )}
       <Pagination
         totalPage={posts.totalPage}
         onChange={changePage}

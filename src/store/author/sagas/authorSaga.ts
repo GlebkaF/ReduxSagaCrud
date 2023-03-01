@@ -44,10 +44,11 @@ function* getAuthorsWorker() {
     }
   } catch (error: any) {
     const { message } = error;
-    switch (message) {
-      case "Request failed with status code 401":
-        console.error("no auth");
-        break;
+    if (message === "Request failed with status code 401") {
+      console.log("ошибка авторизации");
+      if (Cookies.get("refreshToken")) {
+        yield put({ type: "GET_AUTHORS_REQUEST" });
+      }
     }
   }
 }

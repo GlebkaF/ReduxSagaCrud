@@ -58,6 +58,10 @@ const PostForm = ({ textBtn }: postFormProps) => {
   };
 
   const handleClick = () => {
+    dispatch({
+      type: "POSTS_FAILURE",
+      error: null,
+    });
     if (titleRef.current && authorRef.current && textRef.current) {
       const formData = new FormData();
       formData.append("title", titleRef.current.value);

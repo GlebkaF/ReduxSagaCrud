@@ -1,7 +1,13 @@
 import { FC } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { selectAuth } from "../store/auth/reducer";
+import { selectRouter } from "../store/post/reducers/postReducer";
 
 const NavBar: FC<{}> = () => {
+  const { refreshToken } = useSelector(selectAuth);
+  const { location } = useSelector(selectRouter);
+
   return (
     <header className="p-3 bg-dark text-white">
       <div className="container">
@@ -18,11 +24,22 @@ const NavBar: FC<{}> = () => {
                 Home
               </Link>
             </li>
-            <li>
-              <Link to="/dashboard" className="nav-link px-2 text-white">
-                Dashboard
-              </Link>
-            </li>
+            {refreshToken ? (
+              <li>
+                {location.pathname !== "/dashboard" ? (
+                  <Link to="/dashboard" className="nav-link px-2 text-white">
+                    Dashboard
+                  </Link>
+                ) : (
+                  <p
+                    className="nav-link px-2 text-red"
+                    style={{ cursor: "pointer" }}
+                  >
+                    Dashboard
+                  </p>
+                )}
+              </li>
+            ) : null}
           </ul>
           <div className="text-end">
             <Link to="/login" type="button" className="btn-outline-light me-2">
