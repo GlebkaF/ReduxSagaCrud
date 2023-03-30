@@ -51,6 +51,7 @@ const reducers = (state = initialState, action: AuthActions) => {
       return {
         ...state,
         pending: true,
+        // Вот тут можно было ставить флаг refreshTokenRequest
       };
     case REFRESH_FAILURE:
       return {
@@ -64,6 +65,7 @@ const reducers = (state = initialState, action: AuthActions) => {
       };
     case REFRESH_SUCCESS:
       return {
+        // А вот тут обнулять его
         ...state,
         pending: false,
         accessToken: action.payload.accessToken,

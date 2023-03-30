@@ -22,6 +22,7 @@ export async function requestValidAccessToken() {
 
   const now = Math.floor(Date.now() * 0.001);
   if (now > refreshTokenExpires) {
+    console.log(refreshTokenExpires, now);
     const { location } = store.getState().router;
     const { pathname } = location;
     if (pathname !== "/") {
@@ -29,6 +30,7 @@ export async function requestValidAccessToken() {
     }
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
+    // Не понял что за магическая цифра 200
   } else if (accessTokenExpires - now < 200) {
     if (refreshTokenRequest === null) {
       const formData = new FormData();
@@ -48,6 +50,11 @@ export async function requestValidAccessToken() {
             refreshExpiredAt: data.refresh_expired_at,
           })
         );
+
+        // Конструкция ниже похожа на костыль
+        // Потому что refreshTokenRequest = null надо сделать не через 500 милисекунд, а когда запрос на обновление токена завершится
+        // А он не факт что за 500 мс завершится
+        // Лучше в store хранить этот флажок, а сбрасывать его где-то внутри экшена refreshSuccess
         setTimeout(() => {
           refreshTokenRequest = null;
         }, 500);
@@ -81,6 +88,7 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response?.status === 401 && !originalRequest._retry) {
       await requestValidAccessToken();
+      // Чтение и запись из приватных полей (те что с подчеркивания начинаются) - не оч хорошая идея
       originalRequest._retry = true;
       const accessToken = Cookies.get("accessToken");
 
